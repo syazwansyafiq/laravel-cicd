@@ -1,66 +1,75 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel CI/CD Demonstration
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This README provides a guide to setting up a CI/CD pipeline for a Laravel application using GitHub Actions. The setup also includes monitoring and performance metrics with Grafana, Prometheus, Redis, and utilizes Nginx and MySQL for deployment.
 
-## About Laravel
+## Table of Contents
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+1. [Prerequisites](#prerequisites)
+2. [Setup GitHub Actions](#setup-github-actions)
+3. [Monitoring with Grafana and Prometheus](#monitoring-with-grafana-and-prometheus)
+4. [Redis Setup](#redis-setup)
+5. [Nginx Configuration](#nginx-configuration)
+6. [MySQL Database](#mysql-database)
+7. [Running the Application](#running-the-application)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Prerequisites
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Before you begin, ensure you have:
 
-## Learning Laravel
+- A Laravel application set up.
+- A GitHub repository for your project.
+- Basic knowledge of Docker and Docker Compose.
+- Docker installed on your local machine.
+- Docker images for Grafana, Prometheus, Redis, Nginx, and MySQL.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Setup GitHub Actions
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+GitHub Actions will automate the testing and deployment of your Laravel application. 
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. **Create a GitHub Actions Directory**: In your project repository, create a `.github/workflows` directory.
 
-## Laravel Sponsors
+2. **Add a Workflow File**: Within this directory, create a file named `ci-cd.yml`. This file will define the steps for building, testing, and deploying your application.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Monitoring with Grafana and Prometheus
 
-### Premium Partners
+Monitoring your application involves setting up Grafana and Prometheus to track metrics.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+1. **Setup Prometheus and Grafana**: Use Docker Compose to define and run containers for both Prometheus and Grafana. 
 
-## Contributing
+2. **Configure Prometheus**: Create a configuration file for Prometheus to specify what metrics it should scrape. 
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. **Access Grafana**: Once Grafana is running, you can access it via a web browser and set up Prometheus as a data source for visualizing metrics.
 
-## Code of Conduct
+## Redis Setup
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Redis will be used for caching and session management.
 
-## Security Vulnerabilities
+1. **Add Redis Service**: Include a Redis container in your Docker Compose setup.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+2. **Update Laravel Configuration**: Configure your Laravel application to use Redis for caching, sessions, and queues by updating the `.env` file.
 
-## License
+## Nginx Configuration
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Nginx will act as a reverse proxy to handle incoming requests and pass them to your Laravel application.
+
+1. **Add Nginx Service**: Define an Nginx container in your Docker Compose setup.
+
+2. **Create Nginx Configuration File**: Set up the Nginx configuration to proxy requests to the Laravel application.
+
+## MySQL Database
+
+MySQL will be used as the database for your Laravel application.
+
+1. **Add MySQL Service**: Include a MySQL container in your Docker Compose setup.
+
+2. **Update Laravel Configuration**: Configure your Laravel application to connect to MySQL by updating the `.env` file with database connection details.
+
+## Running the Application
+
+1. **Build and Start Services**: Use Docker Compose to build and start all the services defined in your setup.
+
+2. **Access Application**: Open a web browser and visit `http://localhost` to view your running Laravel application.
+
+3. **Access Prometheus and Grafana**: You can monitor metrics by visiting `http://localhost:9090` for Prometheus and `http://localhost:3000` for Grafana.
+
+You now have a CI/CD pipeline with GitHub Actions and a fully integrated environment for monitoring and deploying your Laravel application.
